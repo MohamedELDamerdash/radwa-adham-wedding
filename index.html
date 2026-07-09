@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>أدهم & رضوى — دعوة زفاف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,6 +23,9 @@
             --pink-soft: #fff0f5;
             --text-dark: #3e2723;
             --text-muted: #8d6e63;
+            --envelope-pink: #f8e8e8;
+            --envelope-dark: #e8c4c4;
+            --seal-red: #c62828;
         }
 
         body {
@@ -41,184 +44,377 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #fce4ec 60%, #f48fb1 100%);
-            transition: opacity 1.2s ease, transform 1.2s ease;
+            background: linear-gradient(180deg, #fdf2f2 0%, #f8e8e8 50%, #f5d5d5 100%);
+            transition: opacity 0.8s ease;
+            overflow: hidden;
         }
 
         .envelope-screen.hidden {
             opacity: 0;
-            transform: scale(1.1);
             pointer-events: none;
         }
 
-        .floating-hearts-env {
+        .envelope-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20 Q30 10 40 20 Q50 30 60 20 Q70 10 80 20' stroke='%23d4a574' stroke-width='0.5' fill='none' opacity='0.15'/%3E%3Cpath d='M10 50 Q20 40 30 50 Q40 60 50 50 Q60 40 70 50 Q80 60 90 50' stroke='%23d4a574' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        /* Floating subtle particles */
+        .floating-particles {
             position: absolute;
             inset: 0;
             pointer-events: none;
             overflow: hidden;
         }
 
-        .heart-particle {
+        .particle {
             position: absolute;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 16px;
-            animation: floatHeart 6s ease-in infinite;
+            color: rgba(212, 165, 116, 0.2);
+            font-size: 14px;
+            animation: floatParticle 8s ease-in infinite;
         }
 
-        @keyframes floatHeart {
-            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-20vh) scale(1.2) rotate(360deg); opacity: 0; }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
         }
 
-        .envelope-container {
+        /* Envelope Container */
+        .envelope-wrapper {
             position: relative;
-            width: 280px;
-            height: 380px;
-            cursor: pointer;
-            transition: transform 0.4s ease;
+            width: 300px;
+            height: 420px;
+            perspective: 1200px;
+            z-index: 10;
         }
 
-        .envelope-container:hover {
-            transform: translateY(-5px);
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
         }
 
-        .envelope-container:hover .wax-seal {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(198, 40, 40, 0.5);
+        .envelope:hover {
+            transform: translateY(-3px);
         }
 
-        .envelope-body {
+        /* Envelope Body - Back */
+        .envelope-back {
             position: absolute;
             inset: 0;
-            background: linear-gradient(145deg, #f8bbd0 0%, #f48fb1 40%, #f06292 100%);
-            border-radius: 4px 4px 20px 20px;
+            background: linear-gradient(145deg, #f5e0e0 0%, #e8c8c8 50%, #ddb0b0 100%);
+            border-radius: 4px;
             box-shadow: 
-                0 20px 60px rgba(136, 14, 79, 0.3),
-                0 0 0 1px rgba(255,255,255,0.1) inset;
+                0 25px 80px rgba(136, 14, 79, 0.2),
+                0 0 0 1px rgba(255,255,255,0.2) inset;
         }
 
-        .envelope-body::before {
-            content: '';
+        /* Envelope pattern - embossed flowers */
+        .envelope-pattern {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            border-radius: 4px;
+            opacity: 0.4;
+        }
+
+        .embossed-flower {
+            position: absolute;
+            color: rgba(180, 120, 120, 0.15);
+            font-size: 40px;
+        }
+
+        .embossed-flower:nth-child(1) { top: 8%; left: 12%; transform: rotate(-15deg); }
+        .embossed-flower:nth-child(2) { top: 15%; right: 15%; transform: rotate(20deg); font-size: 35px; }
+        .embossed-flower:nth-child(3) { top: 5%; left: 45%; transform: rotate(-5deg); font-size: 30px; }
+        .embossed-flower:nth-child(4) { top: 25%; left: 25%; transform: rotate(10deg); font-size: 25px; }
+        .embossed-flower:nth-child(5) { top: 20%; right: 30%; transform: rotate(-20deg); font-size: 28px; }
+
+        /* Envelope Flap (Top - opens) */
+        .envelope-flap {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 55%;
-            background: linear-gradient(145deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+            background: linear-gradient(145deg, #fce8e8 0%, #f0d0d0 50%, #e8c0c0 100%);
             clip-path: polygon(0 0, 50% 100%, 100% 0);
-            transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2;
+            transform-origin: top center;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .envelope-container.open .envelope-body::before {
+        .envelope.open .envelope-flap {
             transform: rotateX(180deg);
+            z-index: 5;
         }
 
-        .envelope-body::after {
-            content: '';
+        /* Envelope Side Left */
+        .envelope-side-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0d8d8 0%, #e0b8b8 100%);
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            z-index: 10;
+        }
+
+        /* Envelope Side Right */
+        .envelope-side-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(225deg, #f0d8d8 0%, #e0b8b8 100%);
+            clip-path: polygon(100% 0, 0 50%, 100% 100%);
+            z-index: 10;
+        }
+
+        /* Envelope Bottom */
+        .envelope-bottom {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             height: 50%;
-            background: linear-gradient(145deg, #f48fb1 0%, #f06292 100%);
+            background: linear-gradient(145deg, #e0b8b8 0%, #d0a0a0 100%);
             clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            z-index: 8;
         }
 
-        .envelope-side-left,
-        .envelope-side-right {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .envelope-side-left {
-            left: 0;
-            background: linear-gradient(135deg, #f8bbd0 0%, #f48fb1 100%);
-            clip-path: polygon(0 0, 100% 50%, 0 100%);
-        }
-
-        .envelope-side-right {
-            right: 0;
-            background: linear-gradient(225deg, #f8bbd0 0%, #f48fb1 100%);
-            clip-path: polygon(100% 0, 0 50%, 100% 100%);
-        }
-
+        /* Wax Seal */
         .wax-seal {
             position: absolute;
-            top: 48%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
+            z-index: 30;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wax-seal:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+
+        .wax-seal-inner {
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at 35% 35%, #e53935, #c62828, #8e0000);
             border-radius: 50%;
-            z-index: 10;
             box-shadow: 
-                0 4px 20px rgba(198, 40, 40, 0.4),
-                0 0 0 3px rgba(255,255,255,0.1) inset,
-                0 0 0 6px rgba(198, 40, 40, 0.2) inset;
-            transition: all 0.4s ease;
+                0 6px 25px rgba(198, 40, 40, 0.4),
+                0 0 0 3px rgba(255,255,255,0.15) inset,
+                0 0 0 8px rgba(198, 40, 40, 0.15) inset;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
-        .wax-seal::before {
+        .wax-seal-inner::before {
             content: '🌹';
-            font-size: 28px;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+            font-size: 32px;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+            transition: all 0.3s ease;
         }
 
-        .wax-seal::after {
+        .wax-seal-inner::after {
             content: '';
             position: absolute;
-            inset: -4px;
+            inset: -5px;
             border-radius: 50%;
-            border: 2px solid rgba(198, 40, 40, 0.3);
+            border: 2px solid rgba(198, 40, 40, 0.25);
         }
 
-        .invite-text {
+        /* Seal breaking animation */
+        .wax-seal.breaking {
+            animation: sealBreak 0.6s ease forwards;
+        }
+
+        @keyframes sealBreak {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            30% { transform: translate(-50%, -50%) scale(1.2); }
+            50% { transform: translate(-50%, -50%) scale(0.9); }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+            100% { 
+                transform: translate(-50%, -50%) scale(0); 
+                opacity: 0;
+            }
+        }
+
+        /* Seal crack effect */
+        .seal-crack {
             position: absolute;
-            top: 18%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            z-index: 31;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .seal-crack.show {
+            animation: crackShow 0.4s ease forwards;
+        }
+
+        @keyframes crackShow {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        .crack-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1px;
+        }
+
+        /* Invitation Card Inside Envelope */
+        .invitation-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 360px;
+            background: linear-gradient(145deg, #fffafa 0%, #fff5f5 100%);
+            border-radius: 8px;
+            z-index: 6;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .invitation-card.show {
+            opacity: 1;
+        }
+
+        .invitation-card.rise {
+            animation: cardRise 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes cardRise {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.9); 
+                opacity: 0;
+            }
+            30% {
+                transform: translate(-50%, -70%) scale(0.95);
+                opacity: 1;
+            }
+            60% {
+                transform: translate(-50%, -90%) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(-50%, -120%) scale(1.05); 
+                opacity: 0;
+            }
+        }
+
+        .card-content {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease 0.3s;
+        }
+
+        .invitation-card.show .card-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .card-ampersand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: var(--primary-light);
+            display: block;
+            margin: -5px 0;
+        }
+
+        .card-date {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-top: 20px;
+            font-weight: 700;
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* Envelope text */
+        .envelope-text {
+            position: absolute;
+            top: 22%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
-            z-index: 5;
-            color: var(--primary-dark);
+            z-index: 25;
+            pointer-events: none;
         }
 
-        .invite-text h2 {
+        .envelope-text h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 28px;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.5);
+            font-size: 26px;
+            color: var(--primary-dark);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.6);
             animation: fadeInUp 2s ease forwards;
             opacity: 0;
         }
 
-        .click-text {
+        .click-hint {
             position: absolute;
-            bottom: 15%;
+            bottom: 12%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--primary);
-            opacity: 0.7;
-            animation: pulse 2s ease-in-out infinite;
-            z-index: 5;
+            opacity: 0;
+            animation: pulseHint 2s ease-in-out infinite 1s;
+            z-index: 25;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.9; transform: translateX(-50%) scale(1.05); }
         }
 
         @keyframes fadeInUp {
@@ -230,7 +426,7 @@
         .main-content {
             display: none;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.5s ease;
         }
 
         .main-content.visible {
@@ -458,12 +654,6 @@
             margin-top: 5px;
         }
 
-        .countdown-divider {
-            font-size: 24px;
-            color: var(--gold);
-            align-self: center;
-        }
-
         /* ===== WHERE & WHEN SECTION ===== */
         .where-when-section {
             padding: 60px 20px;
@@ -626,13 +816,18 @@
             line-height: 1.6;
         }
 
-        /* ===== SEE YOU HERE ===== */
+        /* ===== SEE YOU HERE - TYPEWRITER SECTION ===== */
         .closing-section {
             padding: 80px 20px;
             text-align: center;
             background: linear-gradient(180deg, var(--pink-soft) 0%, var(--cream) 50%, var(--pink-soft) 100%);
             position: relative;
             overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .closing-section::before {
@@ -654,27 +849,103 @@
         .closing-content {
             position: relative;
             z-index: 2;
+            max-width: 340px;
         }
 
         .closing-title {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
         }
 
-        .closing-message {
+        .closing-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typewriter text container */
+        .typewriter-container {
+            margin-bottom: 30px;
+            min-height: 200px;
+        }
+
+        .typewriter-line {
             font-size: 15px;
             color: var(--text-muted);
+            line-height: 2.2;
+            margin-bottom: 8px;
+            opacity: 0;
+        }
+
+        .typewriter-line.typing {
+            opacity: 1;
+        }
+
+        .typewriter-line .typed-text {
+            display: inline;
+        }
+
+        .typewriter-line .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background: var(--gold);
+            margin-right: 2px;
+            animation: blinkCursor 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .typewriter-line .cursor.hidden {
+            display: none;
+        }
+
+        /* English typewriter line */
+        .typewriter-line-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--text-muted);
             line-height: 2;
-            max-width: 300px;
-            margin: 0 auto 30px;
+            margin-bottom: 8px;
+            opacity: 0;
+            font-style: italic;
+        }
+
+        .typewriter-line-en.typing {
+            opacity: 1;
+        }
+
+        .typewriter-line-en .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            background: var(--gold);
+            margin-right: 2px;
+            animation: blinkCursor 0.8s infinite;
+            vertical-align: middle;
         }
 
         .closing-heart {
             font-size: 40px;
             animation: heartbeat 2s ease-in-out infinite;
             display: inline-block;
+            margin: 20px 0;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s ease;
+        }
+
+        .closing-heart.visible {
+            opacity: 1;
+            transform: scale(1);
         }
 
         @keyframes heartbeat {
@@ -687,12 +958,23 @@
             font-size: 24px;
             color: var(--gold);
             margin-top: 20px;
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .closing-names.visible {
+            opacity: 1;
         }
 
         .footer-text {
             font-size: 11px;
             color: var(--text-muted);
             margin-top: 40px;
+            opacity: 0;
+            transition: all 0.8s ease 0.5s;
+        }
+
+        .footer-text.visible {
             opacity: 0.6;
         }
 
@@ -710,9 +992,14 @@
 
         /* ===== RESPONSIVE ===== */
         @media (min-width: 768px) {
-            .envelope-container {
-                width: 340px;
-                height: 460px;
+            .envelope-wrapper {
+                width: 360px;
+                height: 500px;
+            }
+
+            .invitation-card {
+                width: 310px;
+                height: 430px;
             }
 
             .name-display {
@@ -728,6 +1015,10 @@
             .map-container,
             .timeline-container {
                 max-width: 450px;
+            }
+
+            .closing-content {
+                max-width: 420px;
             }
         }
 
@@ -765,23 +1056,76 @@
             50% { box-shadow: 0 4px 30px rgba(136, 14, 79, 0.5); }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
+    <!-- Hidden Audio Element -->
+    <audio id="weddingMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-10691.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- ===== ENVELOPE SCREEN ===== -->
     <div class="envelope-screen" id="envelopeScreen">
-        <div class="floating-hearts-env" id="envHearts"></div>
+        <div class="floating-particles" id="particles"></div>
 
-        <div class="envelope-container" id="envelope" onclick="openEnvelope()">
-            <div class="envelope-body"></div>
-            <div class="envelope-side-left"></div>
-            <div class="envelope-side-right"></div>
-            <div class="wax-seal"></div>
-            <div class="invite-text">
-                <h2>You're Invited</h2>
+        <div class="envelope-wrapper">
+            <div class="envelope" id="envelope">
+                <!-- Envelope Back -->
+                <div class="envelope-back"></div>
+
+                <!-- Embossed Pattern -->
+                <div class="envelope-pattern">
+                    <span class="embossed-flower">❀</span>
+                    <span class="embossed-flower">✿</span>
+                    <span class="embossed-flower">❁</span>
+                    <span class="embossed-flower">❀</span>
+                    <span class="embossed-flower">✿</span>
+                </div>
+
+                <!-- Invitation Card Inside -->
+                <div class="invitation-card" id="invitationCard">
+                    <div class="card-content">
+                        <div class="card-names">
+                            أدهم
+                            <span class="card-ampersand">&</span>
+                            رضوى
+                        </div>
+                        <div class="card-date">27 يوليو 2026</div>
+                        <div class="card-subtitle">دعوة زفاف</div>
+                    </div>
+                </div>
+
+                <!-- Envelope Bottom -->
+                <div class="envelope-bottom"></div>
+
+                <!-- Envelope Sides -->
+                <div class="envelope-side-left"></div>
+                <div class="envelope-side-right"></div>
+
+                <!-- Envelope Flap (Top) -->
+                <div class="envelope-flap" id="envelopeFlap"></div>
+
+                <!-- Wax Seal -->
+                <div class="wax-seal" id="waxSeal" onclick="openEnvelope(event)">
+                    <div class="wax-seal-inner"></div>
+                </div>
+
+                <!-- Seal Crack Effect -->
+                <div class="seal-crack" id="sealCrack">
+                    <div class="crack-line" style="width: 2px; height: 30px; top: 10px; left: 50%; transform: rotate(15deg);"></div>
+                    <div class="crack-line" style="width: 2px; height: 25px; top: 15px; left: 45%; transform: rotate(-20deg);"></div>
+                    <div class="crack-line" style="width: 2px; height: 20px; top: 20px; left: 55%; transform: rotate(30deg);"></div>
+                </div>
+
+                <!-- Text on envelope -->
+                <div class="envelope-text">
+                    <h2>You're Invited</h2>
+                </div>
             </div>
-            <div class="click-text">Click to Open</div>
         </div>
+
+        <div class="click-hint" id="clickHint">Click to Open</div>
     </div>
 
     <!-- ===== MAIN CONTENT ===== -->
@@ -930,18 +1274,22 @@
             </div>
         </section>
 
-        <!-- ===== SEE YOU HERE ===== -->
-        <section class="closing-section">
+        <!-- ===== SEE YOU HERE - WITH TYPEWRITER ===== -->
+        <section class="closing-section" id="closingSection">
             <div class="closing-content">
-                <div class="closing-title">See You Here</div>
-                <div class="closing-message">
-                    مع بداية فصل جديد في حياتنا، يسعدنا ويشرفنا أن تكونوا شهوداً على أجمل لحظات العمر...
-                    <br><br>
-                    Your presence will make our happiness complete
+                <div class="closing-title" id="closingTitle">See You Here</div>
+
+                <div class="typewriter-container" id="typewriterContainer">
+                    <!-- Arabic lines -->
+                    <div class="typewriter-line" data-text="مع بداية فصل جديد في حياتنا، يسعدنا ويشرفنا أن تكونوا شهوداً على أجمل لحظات العمر..."></div>
+
+                    <!-- English line -->
+                    <div class="typewriter-line-en" data-text="Your presence will make our happiness complete"></div>
                 </div>
-                <div class="closing-heart">❤️</div>
-                <div class="closing-names">وجودكم هيكمل فرحتنا</div>
-                <div class="footer-text">
+
+                <div class="closing-heart" id="closingHeart">❤️</div>
+                <div class="closing-names" id="closingNames">وجودكم هيكمل فرحتنا</div>
+                <div class="footer-text" id="footerText">
                     A & R Wedding Invitation © 2026
                 </div>
             </div>
@@ -953,36 +1301,263 @@
     <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
 
     <script>
+        // ===== AUDIO =====
+        const audio = document.getElementById('weddingMusic');
+        let musicStarted = false;
+
+        function startMusic() {
+            if (!musicStarted) {
+                audio.volume = 0.4;
+                audio.play().catch(e => {
+                    console.log('Audio autoplay blocked, user interaction needed');
+                });
+                musicStarted = true;
+                const btn = document.getElementById('musicBtn');
+                btn.classList.add('playing');
+                btn.textContent = '🔊';
+            }
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play();
+                btn.classList.add('playing');
+                btn.textContent = '🔊';
+            } else {
+                audio.pause();
+                btn.classList.remove('playing');
+                btn.textContent = '🎵';
+            }
+        }
+
+        // ===== TYPEWRITER EFFECT =====
+        class Typewriter {
+            constructor(container) {
+                this.container = container;
+                this.lines = [];
+                this.currentLine = 0;
+                this.currentChar = 0;
+                this.isTyping = false;
+                this.typingSpeed = 45; // ms per character
+                this.lineDelay = 800; // ms between lines
+
+                this.initLines();
+            }
+
+            initLines() {
+                const lineElements = this.container.querySelectorAll('.typewriter-line, .typewriter-line-en');
+                lineElements.forEach(el => {
+                    const text = el.getAttribute('data-text');
+                    this.lines.push({
+                        element: el,
+                        text: text,
+                        completed: false
+                    });
+                    // Clear the element and prepare for typing
+                    el.innerHTML = '<span class="typed-text"></span><span class="cursor"></span>';
+                });
+            }
+
+            start() {
+                if (this.isTyping) return;
+                this.isTyping = true;
+                this.typeNextChar();
+            }
+
+            typeNextChar() {
+                if (this.currentLine >= this.lines.length) {
+                    this.isTyping = false;
+                    this.hideLastCursor();
+                    this.onComplete();
+                    return;
+                }
+
+                const line = this.lines[this.currentLine];
+                const typedSpan = line.element.querySelector('.typed-text');
+                const cursor = line.element.querySelector('.cursor');
+
+                // Show the line
+                line.element.classList.add('typing');
+
+                if (this.currentChar < line.text.length) {
+                    typedSpan.textContent += line.text[this.currentChar];
+                    this.currentChar++;
+
+                    // Variable typing speed for natural feel
+                    const speed = this.typingSpeed + (Math.random() * 30 - 15);
+                    setTimeout(() => this.typeNextChar(), speed);
+                } else {
+                    // Line complete
+                    line.completed = true;
+                    this.currentLine++;
+                    this.currentChar = 0;
+
+                    // Hide cursor of previous line
+                    if (this.currentLine > 0) {
+                        const prevLine = this.lines[this.currentLine - 1];
+                        const prevCursor = prevLine.element.querySelector('.cursor');
+                        if (prevCursor) prevCursor.classList.add('hidden');
+                    }
+
+                    setTimeout(() => this.typeNextChar(), this.lineDelay);
+                }
+            }
+
+            hideLastCursor() {
+                const lastLine = this.lines[this.lines.length - 1];
+                if (lastLine) {
+                    const cursor = lastLine.element.querySelector('.cursor');
+                    if (cursor) {
+                        setTimeout(() => {
+                            cursor.classList.add('hidden');
+                        }, 1500);
+                    }
+                }
+            }
+
+            onComplete() {
+                // Show heart, names, and footer after typing completes
+                setTimeout(() => {
+                    document.getElementById('closingHeart').classList.add('visible');
+                }, 300);
+
+                setTimeout(() => {
+                    document.getElementById('closingNames').classList.add('visible');
+                }, 600);
+
+                setTimeout(() => {
+                    document.getElementById('footerText').classList.add('visible');
+                }, 900);
+            }
+        }
+
         // ===== ENVELOPE ANIMATION =====
-        function openEnvelope() {
+        let isOpening = false;
+
+        function openEnvelope(event) {
+            if (isOpening) return;
+            isOpening = true;
+            event.stopPropagation();
+
             const envelope = document.getElementById('envelope');
+            const seal = document.getElementById('waxSeal');
+            const sealCrack = document.getElementById('sealCrack');
+            const card = document.getElementById('invitationCard');
             const screen = document.getElementById('envelopeScreen');
             const main = document.getElementById('mainContent');
+            const clickHint = document.getElementById('clickHint');
 
-            envelope.classList.add('open');
+            // Hide click hint
+            clickHint.style.opacity = '0';
 
+            // Step 1: Seal breaks
+            seal.classList.add('breaking');
+
+            // Show crack effect
+            setTimeout(() => {
+                sealCrack.classList.add('show');
+            }, 200);
+
+            // Step 2: Envelope opens (flap rotates)
+            setTimeout(() => {
+                envelope.classList.add('open');
+            }, 400);
+
+            // Step 3: Card rises from envelope
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 800);
+
+            setTimeout(() => {
+                card.classList.add('rise');
+            }, 1200);
+
+            // Step 4: Fade out envelope screen and show main content
             setTimeout(() => {
                 screen.classList.add('hidden');
                 main.style.display = 'block';
+
+                // Start music
+                startMusic();
 
                 setTimeout(() => {
                     main.classList.add('visible');
                     initHearts();
                     initCountdown();
                     initScrollAnimations();
-                }, 100);
-            }, 800);
+                    initTypewriterObserver();
+                }, 200);
+            }, 2500);
         }
 
+        // ===== TYPEWRITER OBSERVER =====
+        let typewriterStarted = false;
+
+        function initTypewriterObserver() {
+            const closingSection = document.getElementById('closingSection');
+            const closingTitle = document.getElementById('closingTitle');
+            const typewriterContainer = document.getElementById('typewriterContainer');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !typewriterStarted) {
+                        typewriterStarted = true;
+
+                        // Show title first
+                        closingTitle.classList.add('visible');
+
+                        // Start typewriter after title animation
+                        setTimeout(() => {
+                            const typewriter = new Typewriter(typewriterContainer);
+                            typewriter.start();
+                        }, 800);
+
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            observer.observe(closingSection);
+        }
+
+        // ===== FLOATING PARTICLES =====
+        function createParticle(container) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.innerHTML = ['❀', '✿', '❁', '•', '·'][Math.floor(Math.random() * 5)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.fontSize = (Math.random() * 10 + 8) + 'px';
+            particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            particle.style.animationDelay = Math.random() * 4 + 's';
+            container.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 12000);
+        }
+
+        function initParticles() {
+            const container = document.getElementById('particles');
+            setInterval(() => createParticle(container), 1000);
+
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => createParticle(container), i * 400);
+            }
+        }
+
+        initParticles();
+
         // ===== FLOATING HEARTS =====
-        function createHeart(container, isEnv = false) {
+        function createHeart(container) {
             const heart = document.createElement('div');
-            heart.className = isEnv ? 'heart-particle' : 'heart-particle';
+            heart.className = 'heart-particle';
             heart.innerHTML = ['❤️', '💕', '💖', '💗'][Math.floor(Math.random() * 4)];
             heart.style.left = Math.random() * 100 + '%';
             heart.style.fontSize = (Math.random() * 12 + 10) + 'px';
             heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
             heart.style.animationDelay = Math.random() * 3 + 's';
+            heart.style.position = 'absolute';
+            heart.style.color = 'rgba(255, 255, 255, 0.4)';
+            heart.style.animation = 'floatHeart 6s ease-in infinite';
             container.appendChild(heart);
 
             setTimeout(() => heart.remove(), 8000);
@@ -992,17 +1567,9 @@
             const container = document.getElementById('mainHearts');
             setInterval(() => createHeart(container), 800);
 
-            // Initial hearts
             for (let i = 0; i < 8; i++) {
                 setTimeout(() => createHeart(container), i * 200);
             }
-        }
-
-        // Env hearts
-        const envContainer = document.getElementById('envHearts');
-        setInterval(() => createHeart(envContainer, true), 600);
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => createHeart(envContainer, true), i * 300);
         }
 
         // ===== COUNTDOWN =====
@@ -1036,16 +1603,6 @@
             }, { threshold: 0.1 });
 
             document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-        }
-
-        // ===== MUSIC =====
-        let musicPlaying = false;
-        function toggleMusic() {
-            const btn = document.getElementById('musicBtn');
-            musicPlaying = !musicPlaying;
-            btn.classList.toggle('playing', musicPlaying);
-            btn.textContent = musicPlaying ? '🔊' : '🎵';
-            // Note: Actual audio implementation requires audio file
         }
     </script>
 
